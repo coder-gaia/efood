@@ -13,16 +13,16 @@ import logo from '../../assets/images/logo.png'
 import pastaImg from '../../assets/images/pasta.png'
 import { Link } from 'react-router-dom'
 
-const ProductsHeader = () => {
+const PlatesHeader = () => {
   return (
     <>
       <HeaderContainer style={{ backgroundImage: `url(${headerImg})` }}>
         <Wrapper>
-          <Title>Restaurants</Title>
+          <Link to={'/'} className="link">
+            <Title>Restaurants</Title>
+          </Link>
           <LogoWrapper>
-            <Link to={'/'}>
-              <img src={logo} alt="logo" />
-            </Link>
+            <img src={logo} alt="logo" />
           </LogoWrapper>
           <Status>0 item(s) in the cart</Status>
         </Wrapper>
@@ -38,4 +38,4 @@ const ProductsHeader = () => {
     </>
   )
 }
-export default ProductsHeader
+export default PlatesHeader

@@ -10,6 +10,7 @@ import {
   Title
 } from './styles'
 import star from '../../assets/images/star.png'
+import { Link } from 'react-router-dom'
 
 export interface TagItem {
   type: string
@@ -22,15 +23,24 @@ interface ProductProps {
   image: string
   rate?: number | string
   tags?: TagItem[]
+  id: number
 }
 
-const Product = ({
+const Establishment = ({
   title,
   description,
   image,
+  id,
   rate = '',
   tags = []
 }: ProductProps) => {
+  const getDescription = (description: string) => {
+    if (description.length > 180) {
+      return description.slice(0, 177).concat('...')
+    }
+    return description
+  }
+
   return (
     <ProductCard>
       <img src={image} alt={title} />
@@ -48,10 +58,12 @@ const Product = ({
           <img src={star} alt="star-img" />
         </RateWrapper>
       </CaptionWrapper>
-      <Description>{description}</Description>
-      <Button>Read more</Button>
+      <Description>{getDescription(description)}</Description>
+      <Link to={`/courses/${id}`}>
+        <Button>See courses</Button>
+      </Link>
     </ProductCard>
   )
 }
 
-export default Product
+export default Establishment

@@ -1,27 +1,56 @@
-import { TagItem } from '../Components/Product'
-
 class Produto {
   id: number
-  title: string
-  description: string
-  image: string
-  rate?: number
-  tags?: TagItem[]
+  titulo: string
+  destacado: boolean
+  tipo: string
+  avaliacao: number
+  descricao: string
+  capa: string
+  cardapio: Prato[]
 
   constructor(
     id: number,
-    title: string,
-    description: string,
-    image: string,
-    rate: number,
-    tags: string[]
+    titulo: string,
+    destacado: boolean,
+    tipo: string,
+    avaliacao: number,
+    descricao: string,
+    capa: string,
+    cardapio: Prato[]
   ) {
     this.id = id
-    this.title = title
-    this.description = description
-    this.image = image
-    this.rate = rate
-    this.tags = tags.map((tag) => ({ type: tag, children: tag }))
+    this.titulo = titulo
+    this.destacado = destacado
+    this.tipo = tipo
+    this.avaliacao = avaliacao
+    this.descricao = descricao
+    this.capa = capa
+    this.cardapio = cardapio
+  }
+}
+
+export class Prato {
+  foto: string
+  preco: number
+  id: number
+  nome: string
+  descricao: string
+  porcao: string
+
+  constructor(
+    foto: string,
+    preco: number,
+    id: number,
+    nome: string,
+    descricao: string,
+    porcao: string
+  ) {
+    this.foto = foto
+    this.preco = preco
+    this.id = id
+    this.nome = nome
+    this.descricao = descricao
+    this.porcao = porcao
   }
 }
 

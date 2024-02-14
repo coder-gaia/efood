@@ -1,106 +1,44 @@
+import { useEffect, useState } from 'react'
 import Hero from '../../Components/Hero'
-import { TagItem } from '../../Components/Product'
-import ProductsList from '../../Components/ProductsList'
+import EstablishmentList from '../../Components/RestaurantsList'
 import Produto from '../../Models/Produto'
-import sushi from '../../assets/images/sushi.png'
-import pasta from '../../assets/images/pasta.png'
-
-const productListing: Produto[] = [
-  {
-    id: 1,
-    tags: [
-      {
-        type: 'japanese',
-        children: 'Japanese'
-      } as TagItem
-    ],
-    rate: 4.1,
-    image: sushi,
-    description:
-      'Order the best of Japanese cuisine now in the comfort of your home! Fresh sushi, delicious sashimi and irresistible hot dishes. Fast delivery, careful packaging and guaranteed quality. Experience Japan without leaving home with our delivery!',
-    title: 'Hioki Sushi'
-  },
-  {
-    id: 2,
-    tags: [
-      {
-        type: 'free delivery',
-        children: 'free delivery'
-      } as TagItem,
-      {
-        type: 'italian',
-        children: 'Italian'
-      } as TagItem
-    ],
-    rate: 3.2,
-    image: pasta,
-    description:
-      'La Dolce Vita Trattoria brings authentic Italian cuisine to you! Enjoy homemade pasta, delicious pizzas and incredible risottos, all in the comfort of your own home. Fast delivery, well-packaged dishes and unforgettable flavor. Order now!',
-    title: 'La Dolce Vita Trattoria'
-  },
-  {
-    id: 3,
-    tags: [
-      {
-        type: 'japanese',
-        children: 'Japanese'
-      } as TagItem
-    ],
-    rate: 3.9,
-    image: sushi,
-    description:
-      'Order the best of Japanese cuisine now in the comfort of your home! Fresh sushi, delicious sashimi and irresistible hot dishes. Fast delivery, careful packaging and guaranteed quality. Experience Japan without leaving home with our delivery!',
-    title: 'Hioki Sushi'
-  },
-  {
-    id: 4,
-    tags: [
-      {
-        type: 'italian',
-        children: 'Italian'
-      } as TagItem
-    ],
-    rate: 4.7,
-    image: pasta,
-    description:
-      'La Dolce Vita Trattoria brings authentic Italian cuisine to you! Enjoy homemade pasta, delicious pizzas and incredible risottos, all in the comfort of your own home. Fast delivery, well-packaged dishes and unforgettable flavor. Order now!',
-    title: 'La Dolce Vita Trattoria'
-  },
-  {
-    id: 5,
-    tags: [
-      {
-        type: 'japanese',
-        children: 'Japanese'
-      } as TagItem
-    ],
-    rate: 4.9,
-    image: sushi,
-    description:
-      'Order the best of Japanese cuisine now in the comfort of your home! Fresh sushi, delicious sashimi and irresistible hot dishes. Fast delivery, careful packaging and guaranteed quality. Experience Japan without leaving home with our delivery!',
-    title: 'Hioki Sushi'
-  },
-  {
-    id: 6,
-    tags: [
-      {
-        type: 'italian',
-        children: 'Italian'
-      } as TagItem
-    ],
-    rate: 4.2,
-    image: pasta,
-    description:
-      'La Dolce Vita Trattoria brings authentic Italian cuisine to you! Enjoy homemade pasta, delicious pizzas and incredible risottos, all in the comfort of your own home. Fast delivery, well-packaged dishes and unforgettable flavor. Order now!',
-    title: 'La Dolce Vita Trattoria'
-  }
-]
 
 const Home = () => {
+  const [restaurants, setRestaurants] = useState([])
+
+  const fetchRestaurants = async () => {
+    try {
+      const response = await fetch(
+        'https://fake-api-tau.vercel.app/api/efood/restaurantes'
+      )
+      const data = await response.json()
+      const formattedData = data.map((restaurante: any) => {
+        return new Produto(
+          restaurante.id,
+          restaurante.titulo,
+          restaurante.destacado,
+          restaurante.tipo,
+          restaurante.avaliacao,
+          restaurante.descricao,
+          restaurante.capa,
+          restaurante.cardapio
+        )
+      })
+
+      setRestaurants(formattedData)
+    } catch (error) {
+      console.log('failed while fetching the plates', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchRestaurants()
+  }, [])
+
   return (
     <>
       <Hero />
-      <ProductsList produtos={productListing} />
+      <EstablishmentList establishments={restaurants} />
     </>
   )
 }

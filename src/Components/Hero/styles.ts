@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { colors } from '../../styles'
 
 export const ImageContainer = styled.div`
   display: block;
@@ -34,22 +33,4 @@ export const Title = styled.h1`
 export const BtnWrapper = styled.div`
   margin: 0 auto;
   text-align: center;
-`
-export const Button = styled.button`
-  width: 90px;
-  height: 36px;
-  background-color: ${colors.lightRed};
-  color: ${colors.white};
-  margin-top: 70px;
-  margin-bottom: 8px;
-  border: none;
-  border-bottom: 2px solid ${colors.grey};
-  border-radius: 4px;
-  font-weight: bold;
-
-  &: hover {
-    background-color: ${colors.white};
-    color: ${colors.grey};
-    transition: all ease 0.3s;
-  }
 `

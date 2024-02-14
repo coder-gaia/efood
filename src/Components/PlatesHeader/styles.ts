@@ -16,6 +16,10 @@ export const HeaderContainer = styled.div`
     justify-content: space-between;
     align-items: flex-end;
   }
+
+  .link: visited {
+    color: ${colors.lightRed};
+  }
 `
 export const Wrapper = styled.div`
   display: flex;
@@ -38,13 +42,23 @@ export const Status = styled.p`
 `
 export const PlaceholderImg = styled.div<{ backgroundImage: string }>`
   position: relative;
-  color: ${colors.white}
+  color: ${colors.white};
   width: 100%;
   height: 280px;
   background-image: url(${(props) => props.backgroundImage});
   background-size: cover;
-  filter: brightness(0.85);
   margin-bottom: 64px;
+  z-index: 1;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    content: '';
+  }
 `
 
 export const Caption = styled.p`
@@ -52,9 +66,11 @@ export const Caption = styled.p`
   font-size: 32px;
   position: absolute;
   top: 32px;
-  color: rgba(255, 255, 255, 0.9);
+  color: color: ${colors.white};
+  z-index: 1;
 `
 export const UnderCaption = styled.p`
+  color: ${colors.white};
   max-width: 450px;
   font-size: 32px;
   font-weight: bold;
@@ -62,5 +78,5 @@ export const UnderCaption = styled.p`
   bottom: 10px;
   left: 27%;
   transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.95);
+  z-index: 1;
 `

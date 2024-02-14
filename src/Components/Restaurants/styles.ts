@@ -2,13 +2,15 @@ import styled from 'styled-components'
 import { colors } from '../../styles'
 
 export const ProductCard = styled.div`
-  width: 100%;
+  max-width: 400px;
   border: 1px solid ${colors.darkRed};
   border-radius: 4px;
   position: relative;
 
   img {
     width: 100%;
+    height: 220px;
+    object-fit: cover;
     border-radius: 8px;
     padding: 4px;
   }
@@ -24,7 +26,8 @@ export const RateWrapper = styled.div`
   align-items: center;
 
   img {
-    max-width: 24px;
+    max-width: 32px;
+    max-height: 32px;
   }
 `
 export const Rate = styled.div`

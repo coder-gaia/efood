@@ -5,7 +5,8 @@ export const colors = {
   lightRed: '#d14545',
   grey: '#333333',
   white: '#FFF8F2',
-  salmon: '#FFEBD9'
+  salmon: '#FFEBD9',
+  black: '#000'
 }
 
 export const GlobalStyle = createGlobalStyle`
@@ -13,6 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding:0;
     box-sizing: border-box;
+    text-decoration: none;
     font-family: 'Roboto', sans-serif;
   }
 

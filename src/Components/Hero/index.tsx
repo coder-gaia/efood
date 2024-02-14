@@ -1,9 +1,7 @@
-import { Link } from 'react-router-dom'
 import heroImg from '../../assets/images/hero.png'
 import logo from '../../assets/images/logo.png'
 import {
   BtnWrapper,
-  Button,
   ImageContainer,
   LogoContainer,
   Title,
@@ -22,11 +20,7 @@ const Hero = () => {
       <TitleWrapper>
         <Title>Live gastronomic experiences in the comfort of your home</Title>
       </TitleWrapper>
-      <BtnWrapper>
-        <Link to={'/products'}>
-          <Button>Browse</Button>
-        </Link>
-      </BtnWrapper>
+      <BtnWrapper></BtnWrapper>
     </ImageContainer>
   )
 }
