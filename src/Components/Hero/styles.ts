@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const ImageContainer = styled.div`
   display: block;
   width: 100%;
-  height: 460px;
+  height: 384px;
   background-repeat: no-repeat;
   background-size: cover;
   font-weight: bold;
@@ -14,17 +14,18 @@ export const Wrapper = styled.div`
   justify-content: center;
 `
 export const LogoContainer = styled.div`
-  margin-top: 30px;
+  margin-top: 64px;
 `
 
 export const TitleWrapper = styled.div`
-  margin: 0 auto;
   text-align: center;
-  max-width: 400px;
-  width: 100%;
-  margin-top: 91px;
+  margin-top: 138px;
+  margin-bottom: 40px;
 `
 export const Title = styled.h1`
+  margin: 0 auto;
+  width: 539px;
+  height: 84px;
   font-weight: 900;
   font-size: 36px;
   line-height: 40px;

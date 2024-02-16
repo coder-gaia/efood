@@ -4,7 +4,7 @@ import { colors } from '../../styles'
 export const HeaderContainer = styled.div`
   display: block;
   width: 100%;
-  height: 200px;
+  height: 186px;
   background-repeat: no-repeat;
   background-size: cover;
   font-weight: bold;

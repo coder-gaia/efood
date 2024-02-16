@@ -6,9 +6,6 @@ export const List = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 24px;
-  gap: 60px;
-  margin-left: 80px;
-
-  .container {
-  }
+  gap: 32px;
+  margin-left: 40px;
 `

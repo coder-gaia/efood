@@ -2,8 +2,9 @@ import styled from 'styled-components'
 import { colors } from '../../styles'
 
 export const ProductCard = styled.div`
-  width: 350px;
-  height: 250px;
+  width: 384px;
+  width: 100%;
+  height: 338px;
   background-color: ${colors.lightRed};
   color: ${colors.white};
   border-radius: 4px;
@@ -11,7 +12,7 @@ export const ProductCard = styled.div`
 
   img.plate-image {
     width: 100%;
-    height: 80px;
+    height: 167px;
     object-fit: cover;
   }
 `
@@ -27,7 +28,6 @@ export const Title = styled.h3`
 `
 export const Description = styled.p`
   display: block;
-  margin-top: 4px;
   font-weight: 600px;
   font-size: 14px;
   line-height: 22px;
@@ -40,9 +40,7 @@ export const Button = styled.button`
   background-color: ${colors.salmon};
   color: ${colors.darkRed};
   margin-left: 8px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  border-radius: 4px;
+  margin-top: 6px;
   font-weight: bold;
 
   &: hover {
@@ -62,6 +60,7 @@ export const ModalOverlay = styled.div`
 `
 
 export const ModalContent = styled.div`
+  display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -70,7 +69,8 @@ export const ModalContent = styled.div`
   color: ${colors.white};
   border-radius: 4px;
   padding: 8px;
-  max-width: 400px;
+  max-width: 1024px;
+  height: 344px;
   width: 100%;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 `
@@ -83,17 +83,20 @@ export const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 24px;
-  color: ${colors.black};
-  font-weight: bold;
+  color: ${colors.white};
 `
 
 export const ModalImage = styled.img`
-  width: 100%;
-  height: auto;
-  margin-bottom: 10px;
+  display: flex;
+  width: 280px;
+  height: 280px;
+  margin: 24px 24px 32px 32px;
   object-fit: cover;
 `
-
+export const ModalWrapper = styled.div`
+  display: block;
+  padding: 8px;
+`
 export const ModalTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
@@ -102,27 +105,30 @@ export const ModalTitle = styled.div`
 `
 
 export const ModalDescription = styled.div`
+  width: 656px;
+  height: 176px;
   padding: 8px;
   font-size: 16px;
-  margin-bottom: 20px;
+  margin-bottom: -40px;
 `
 export const Portion = styled.div`
-  padding: 8px;
   font-size: 16px;
-  margin-bottom: 14px;
+  margin-left: 8px;
+  margin-bottom: 16px;
 `
 
 export const ModalButton = styled.button`
-  width: 100%;
-  padding: 10px 0;
+  width: 218px;
+  height: 24px;
   background-color: ${colors.salmon};
   color: ${colors.darkRed};
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 14px;
   border: 2px solid ${colors.grey};
-  border-radius: 12px;
   cursor: pointer;
-  margin-bottom: 8px;
   font-weight: bold;
+  margin-top: 20px;
+  margin-left: 8px;
 
   &: hover {
     background-color: ${colors.white};
