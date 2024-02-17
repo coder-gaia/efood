@@ -39,6 +39,9 @@ export const Status = styled.p`
   margin-top: 32px;
   font-weight: bold;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `
 export const PlaceholderImg = styled.div<{ backgroundImage: string }>`
   position: relative;
@@ -79,4 +82,9 @@ export const UnderCaption = styled.p`
   left: 27%;
   transform: translateX(-50%);
   z-index: 1;
+`
+export const CartIcon = styled.img`
+  filter: invert(76%) sepia(77%) saturate(2845%) hue-rotate(340deg)
+    brightness(91%) contrast(87%);
+  margin-left: 2px;
 `

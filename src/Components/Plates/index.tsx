@@ -15,8 +15,12 @@ import {
   ProductCard,
   Title
 } from './styles'
+import { useDispatch } from 'react-redux'
+import { add, open } from '../../store/reducers/cart'
+import Prato from '../../Models/Prato'
 
 interface PlateProps {
+  plate: Prato
   title: string
   description: string
   image: string
@@ -24,8 +28,23 @@ interface PlateProps {
   price: number
 }
 
-const Plate = ({ title, description, image, price, porcao }: PlateProps) => {
+const Plate = ({
+  title,
+  description,
+  image,
+  price,
+  porcao,
+  plate
+}: PlateProps) => {
   const [isModalOpen, setModalIsOpen] = useState(false)
+
+  const dispatch = useDispatch()
+
+  const addToCart = () => {
+    dispatch(add(plate))
+    dispatch(open())
+    setModalIsOpen(false)
+  }
 
   const openModal = () => {
     setModalIsOpen(true)
@@ -57,8 +76,10 @@ const Plate = ({ title, description, image, price, porcao }: PlateProps) => {
             <ModalWrapper>
               <ModalTitle>{title}</ModalTitle>
               <ModalDescription>{description}</ModalDescription>
-              <Portion>Serve {porcao}</Portion>
-              <ModalButton>Add to Cart - ${price}</ModalButton>
+              <Portion>Serves {porcao}</Portion>
+              <ModalButton onClick={addToCart}>
+                Add to Cart - ${price}
+              </ModalButton>
             </ModalWrapper>
           </ModalContent>
         </ModalOverlay>

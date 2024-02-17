@@ -16,6 +16,7 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     text-decoration: none;
     font-family: 'Roboto', sans-serif;
+    list-style: none;
   }
 
   body {
