@@ -14,6 +14,11 @@ export const ProductCard = styled.div`
     height: 220px;
     object-fit: cover;
   }
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+    height: auto;
+  }
 `
 export const CaptionWrapper = styled.div`
   display: flex;

@@ -9,8 +9,8 @@ interface PlatesOnSell {
 const PlatesList = ({ plates }: PlatesOnSell) => {
   return (
     <>
-      <Container>
-        <div className="container">
+      <Container className="container">
+        <div>
           <List>
             {plates.map((prato) => (
               <Plate

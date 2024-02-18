@@ -3,6 +3,7 @@ import { colors } from '../../styles'
 
 export const HeaderContainer = styled.div`
   display: block;
+  max-width: 100%;
   width: 100%;
   height: 186px;
   background-repeat: no-repeat;
@@ -29,6 +30,7 @@ export const Wrapper = styled.div`
 export const LogoWrapper = styled.div`
   align-items: center;
   margin-top: 40px;
+  margin-left: 32px;
 `
 export const Title = styled.h3`
   margin-top: 32px;
@@ -71,6 +73,7 @@ export const Caption = styled.p`
   top: 32px;
   color: color: ${colors.white};
   z-index: 1;
+
 `
 export const UnderCaption = styled.p`
   color: ${colors.white};

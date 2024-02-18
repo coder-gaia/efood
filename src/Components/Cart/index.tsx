@@ -31,6 +31,7 @@ const Cart = () => {
         <Overlay onClick={closeCart} />
         <Sidebar>
           <ul>
+            <h4>{plates.length === 0 ? 'The cart is empty' : null}</h4>
             {plates.map(
               (prato) =>
                 prato?.foto && (

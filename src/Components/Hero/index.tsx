@@ -1,7 +1,6 @@
 import heroImg from '../../assets/images/hero.png'
 import logo from '../../assets/images/logo.png'
 import {
-  BtnWrapper,
   ImageContainer,
   LogoContainer,
   Title,
@@ -20,7 +19,6 @@ const Hero = () => {
       <TitleWrapper>
         <Title>Live gastronomic experiences in the comfort of your home</Title>
       </TitleWrapper>
-      <BtnWrapper></BtnWrapper>
     </ImageContainer>
   )
 }

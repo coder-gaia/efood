@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const FooterContainer = styled.footer`
   display: block;
+  max-width: 2032px;
   width: 100%;
   height: 298px;
   background-repeat: no-repeat;

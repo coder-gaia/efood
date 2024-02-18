@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const ImageContainer = styled.div`
   display: block;
+  max-width: 2032px;
   width: 100%;
   height: 384px;
   background-repeat: no-repeat;
@@ -29,9 +30,4 @@ export const Title = styled.h1`
   font-weight: 900;
   font-size: 36px;
   line-height: 40px;
-`
-
-export const BtnWrapper = styled.div`
-  margin: 0 auto;
-  text-align: center;
 `
