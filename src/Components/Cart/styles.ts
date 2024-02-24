@@ -32,6 +32,15 @@ export const Sidebar = styled.aside`
   width: 100%;
   height: 100vh;
   z-index: 1;
+  overflow-y: auto;
+
+  .empty-text {
+    text-align: center;
+    color: ${colors.white};
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 22px;
+  }
 `
 export const Prices = styled.p`
   margin-top: 40px;

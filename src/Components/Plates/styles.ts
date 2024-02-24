@@ -46,6 +46,7 @@ export const Button = styled.button`
   color: ${colors.darkRed};
   margin-left: 8px;
   margin-top: 6px;
+  border: none;
   font-weight: bold;
 
   &: hover {
