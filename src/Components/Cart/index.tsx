@@ -64,7 +64,7 @@ const Cart = () => {
                     title="click here to finish the order"
                     onClick={finishPurchase}
                   >
-                    Finish Order
+                    Proceed with delivery
                   </Button>
                 </>
               ) : (

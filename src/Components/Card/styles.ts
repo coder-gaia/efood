@@ -4,7 +4,6 @@ import { colors } from '../../styles'
 export const Container = styled.div`
   border-radius: 8px;
   background-color: ${colors.lightRed};
-  margin-top: -30px;
   padding: 0;
 
   p {

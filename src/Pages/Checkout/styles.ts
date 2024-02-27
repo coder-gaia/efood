@@ -29,6 +29,10 @@ export const MainRow = styled.div`
     border: none;
     margin-bottom: 8px;
     margin-top: 8px;
+
+    &.error {
+      border: 3px solid black;
+    }
   }
 `
 export const SecRow = styled.div`
@@ -49,6 +53,10 @@ export const SecRow = styled.div`
   input {
     background-color: ${colors.salmon};
     border: none;
+
+    &.error {
+      border: 3px solid ${colors.grey};
+    }
   }
 
   .cardNum {
@@ -71,7 +79,6 @@ export const SecRow = styled.div`
     }
   }
 `
-export const InputWrapper = styled.div``
 
 export const Wrapper = styled.div`
   display: block;
@@ -85,5 +92,9 @@ export const Wrapper = styled.div`
     border: none;
     margin-bottom: 8px;
     margin-top: 8px;
+
+    &.error {
+      border: 3px solid ${colors.grey};
+    }
   }
 `

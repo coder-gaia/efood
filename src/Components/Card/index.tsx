@@ -1,18 +1,16 @@
 import { Container } from './styles'
 
 type Props = {
-  children: JSX.Element
+  children: React.ReactNode
   title: string
-  totalPrice?: string
+  totalPrice?: () => void
 }
 
-const Card = ({ children, title, totalPrice }: Props) => {
+const Card = ({ children, title }: Props) => {
   return (
     <>
       <Container>
-        <h2>
-          {title} {totalPrice}
-        </h2>
+        <h2>{title}</h2>
         {children}
       </Container>
     </>
