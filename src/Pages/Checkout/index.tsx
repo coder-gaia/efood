@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
+import $ from 'jquery'
+import 'jquery-mask-plugin'
 import { RootReducer } from '../../store'
 import { clear } from '../../store/reducers/cart'
 import Card from '../../Components/Card'
@@ -38,13 +40,23 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
   >('delivery')
   const plates = useSelector((state: RootReducer) => state.cart.plates)
   const [isDeliveryFormSent, setIsDeliveryFormSent] = useState(false)
+  const [isPaymentFormSent, setIsPaymentFormSent] = useState(false)
+  const [orderId, setOrderId] = useState<string | null>(null)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    ;($('#zipCode') as any).mask('00000-000')
+    ;($('#cardNumber') as any).mask('0000 0000 0000 0000')
+    ;($('#cardCode') as any).mask('000')
+    ;($('#dueMonth') as any).mask('00')
+    ;($('#dueYear') as any).mask('00')
+  }, [])
 
   const goToPaymentForm = () => {
     setActiveCart('payment')
   }
 
-  const returToDelivery = () => {
+  const returnToDelivery = () => {
     setActiveCart('delivery')
   }
 
@@ -58,12 +70,16 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
     returnToCart()
   }
 
+  const updateOrderId = (id: string) => {
+    setOrderId(id)
+  }
+
   const handleSubmit = async (
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     try {
-      console.log('Tentativa de envio do formulário:', values)
+      console.log('Attempt to send the form:', values)
 
       if (
         !values.receiver ||
@@ -71,15 +87,89 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
         !values.city ||
         !values.zipCode ||
         !values.number
-        // !values.nameOnTheCard ||
-        // !values.cardNumber ||
-        // !values.cardCode ||
-        // !values.dueMonth ||
-        // !values.dueYear
       ) {
         alert('All the fields must be filled correctly.')
         return
       }
+
+      const products = plates.map((plate) => {
+        return {
+          id: plate.id,
+          price: plate.preco
+        }
+      })
+
+      const response = await fetch(
+        'https://fake-api-tau.vercel.app/api/efood/checkout',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            delivery: {
+              receiver: values.receiver,
+              address: {
+                description: values.address,
+                city: values.city,
+                zipCode: parseInt(values.zipCode),
+                number: values.number,
+                complement: values.complement
+              }
+            },
+            payment: {
+              card: {
+                name: values.nameOnTheCard,
+                number: values.cardNumber,
+                code: values.cardCode,
+                expires: {
+                  month: values.dueMonth,
+                  year: values.dueYear
+                }
+              }
+            },
+            products: products
+          })
+        }
+      )
+
+      if (response.ok) {
+        setIsDeliveryFormSent(true)
+        goToPaymentForm()
+      } else {
+        console.error('Error while submitting form:', response.statusText)
+      }
+    } catch (error: any) {
+      console.error('Error while submitting form:', error.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleSubmitPayment = async (
+    values: FormValues,
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
+    try {
+      console.log('Attempt to send the form:', values)
+
+      if (
+        !values.nameOnTheCard ||
+        !values.cardNumber ||
+        !values.cardCode ||
+        !values.dueYear ||
+        !values.dueMonth
+      ) {
+        alert('All the fields must be filled correctly.')
+        return
+      }
+
+      const products = plates.map((plate) => {
+        return {
+          id: plate.id,
+          price: plate.preco
+        }
+      })
 
       const response = await fetch(
         'https://fake-api-tau.vercel.app/api/efood/checkout',
@@ -95,7 +185,7 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                 description: values.address,
                 city: values.city,
                 zipCode: values.zipCode,
-                number: parseInt(values.number),
+                number: values.number,
                 complement: values.complement
               }
             },
@@ -103,33 +193,31 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
               card: {
                 name: values.nameOnTheCard,
                 number: values.cardNumber,
-                code: parseInt(values.cardCode),
+                code: values.cardCode,
                 expires: {
-                  month: parseInt(values.dueMonth),
-                  year: parseInt(values.dueYear)
+                  month: values.dueMonth,
+                  year: values.dueYear
                 }
               }
             },
-            products: {
-              id: 1,
-              price: getTotalPrice(plates)
-            }
+            products: products
           })
         }
       )
 
       if (response.ok) {
-        console.log('Dados do formulário enviados com sucesso!')
-        setIsDeliveryFormSent(true)
-        goToPaymentForm()
+        const data = await response.json()
+        const orderId = data.orderId
+
+        console.log('Order ID (Payment):', orderId)
+        updateOrderId(orderId)
+        setIsPaymentFormSent(true)
+        sentOrder()
       } else {
-        console.error(
-          'Erro ao enviar dados do formulário:',
-          response.statusText
-        )
+        console.error('Error while submitting form', response.statusText)
       }
     } catch (error: any) {
-      console.error('Erro ao enviar dados do formulário:', error.message)
+      console.error('Error while submitting form:', error.message)
     } finally {
       setSubmitting(false)
     }
@@ -153,15 +241,11 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
         dueYear: ''
       }}
       onSubmit={(values, { setSubmitting }) => {
-        handleSubmit(values, { setSubmitting })
-        if (
-          !values.receiver ||
-          !values.address ||
-          !values.city ||
-          !values.zipCode ||
-          !values.number
-        ) {
-          return
+        if (activeCart === 'delivery') {
+          handleSubmit(values, { setSubmitting })
+        }
+        if (activeCart === 'payment') {
+          handleSubmitPayment(values, { setSubmitting })
         }
         console.log('Form sent:', values)
         setSubmitting(false)
@@ -213,6 +297,7 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
               <SmallInputsGroup>
                 <label htmlFor="number">Number:</label>
                 <Field
+                  type="number"
                   id="number"
                   name="number"
                   className={errors.number && touched.number ? 'error' : ''}
@@ -236,67 +321,40 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
           >
             <InputGroup>
               <label htmlFor="nameOnTheCard">Name on the card</label>
-              <Field
-                id="nameOnTheCard"
-                name="nameOnTheCard"
-                className={
-                  errors.nameOnTheCard && touched.nameOnTheCard ? 'error' : ''
-                }
-              />
+              <Field id="nameOnTheCard" name="nameOnTheCard" />
             </InputGroup>
 
             <SmallInputsGroupWrapper>
               <SmallInputsGroup>
                 <label htmlFor="cardNumber">Card number</label>
-                <Field
-                  type="text"
-                  id="cardNumber"
-                  name="cardNumber"
-                  className={
-                    errors.cardNumber && touched.cardNumber ? 'error' : ''
-                  }
-                />
+                <Field type="text" id="cardNumber" name="cardNumber" />
               </SmallInputsGroup>
               <SmallInputsGroup>
                 <label htmlFor="cardCode" className="LabelSize">
                   CVV
                 </label>
-                <Field
-                  type="text"
-                  id="cardCode"
-                  name="cardCode"
-                  className={errors.cardCode && touched.cardCode ? 'error' : ''}
-                />
+                <Field type="text" id="cardCode" name="cardCode" />
               </SmallInputsGroup>
             </SmallInputsGroupWrapper>
 
             <SmallInputsGroupWrapper>
               <SmallInputsGroup>
                 <label htmlFor="dueMonth">Due month</label>
-                <Field
-                  type="text"
-                  id="dueMonth"
-                  name="dueMonth"
-                  className={errors.dueMonth && touched.dueMonth ? 'error' : ''}
-                />
+                <Field type="text" id="dueMonth" name="dueMonth" />
               </SmallInputsGroup>
               <SmallInputsGroup>
                 <label htmlFor="dueYear">Due year</label>
-                <Field
-                  type="text"
-                  id="dueYear"
-                  name="dueYear"
-                  className={errors.dueYear && touched.dueYear ? 'error' : ''}
-                />
+                <Field type="text" id="dueYear" name="dueYear" />
               </SmallInputsGroup>
             </SmallInputsGroupWrapper>
-            <SentButton onClick={sentOrder}>Finish payment</SentButton>
-            <SentButton onClick={returToDelivery}>
+            <SentButton>Finish payment</SentButton>
+            <SentButton onClick={returnToDelivery}>
               Return to delivery
             </SentButton>
           </Card>
           <Card
-            title="Order sent - {orderId}"
+            title="Order sent"
+            orderId={orderId}
             isVisible={activeCart === 'orderSent'}
           >
             <ThanksNote>

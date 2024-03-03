@@ -23,6 +23,10 @@ export const InputGroup = styled.div`
     background-color: ${colors.salmon};
     border: none;
   }
+
+  &.error {
+    border: 3px solid black;
+  }
 `
 
 export const SentButton = styled.button`
@@ -64,7 +68,7 @@ export const SmallInputsGroup = styled.div`
     border: none;
 
     &.error {
-      border: 2px solid red;
+      border: 3px solid black;
     }
   }
 `
