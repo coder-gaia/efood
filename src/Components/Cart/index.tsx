@@ -12,7 +12,7 @@ const Cart = () => {
   const [isCheckoutVisible, setIsCheckoutVisible] = useState(false)
   const dispatch = useDispatch()
 
-  const finishPurchase = () => {
+  const goToCheckout = () => {
     setIsCheckoutVisible(true)
   }
 
@@ -62,7 +62,7 @@ const Cart = () => {
                   </Prices>
                   <Button
                     title="click here to finish the order"
-                    onClick={finishPurchase}
+                    onClick={goToCheckout}
                   >
                     Proceed with delivery
                   </Button>

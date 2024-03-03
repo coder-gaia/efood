@@ -1,100 +1,74 @@
 import styled from 'styled-components'
 import { colors } from '../../styles'
-import { Button } from '../../Components/Plates/styles'
 
-export const Form = styled.form`
-  padding: 0;
-  margin: 0 auto;
-  margin-left: 4px;
-  overflow-x: hidden;
-
-  ${Button} {
-    width: 320px;
-    margin: 0 auto;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 8px;
-
+export const Card = styled.div<{ isVisible: boolean }>`
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
 `
 
-export const MainRow = styled.div`
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
+export const InputGroup = styled.div`
+  margin-bottom: 15px;
 
-  input {
-    width: 320px;
-    height: 32px;
-    background-color: ${colors.salmon};
-    border: none;
-    margin-bottom: 8px;
-    margin-top: 8px;
-
-    &.error {
-      border: 3px solid black;
-    }
-  }
-`
-export const SecRow = styled.div`
-  display: flex;
-  margin-bottom: 16px;
-  color: ${colors.salmon};
-
-  label,
-  input {
+  label {
     display: block;
-    margin-right: 24px;
-    margin-bottom: -8px;
-    width: 145px;
-    height: 32px;
-    font-weight: bold;
+    margin-bottom: 5px;
   }
 
   input {
+    width: 328px;
+    padding: 8px;
+    font-size: 16px;
+    background-color: ${colors.salmon};
+    border: none;
+  }
+`
+
+export const SentButton = styled.button`
+  width: 328px;
+  margin-bottom: 16px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: ${colors.salmon};
+
+  &:hover {
+    background-color: ${colors.white};
+    color: ${colors.grey};
+  }
+`
+
+export const SmallInputsGroupWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+`
+
+export const SmallInputsGroup = styled.div`
+  width: 48%;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
     background-color: ${colors.salmon};
     border: none;
 
     &.error {
-      border: 3px solid ${colors.grey};
-    }
-  }
-
-  .cardNum {
-    input {
-      width: 190px;
-    }
-  }
-
-  .cvv {
-    margin-left: 24px;
-
-    input {
-      width: 80px;
-    }
-  }
-
-  .year {
-    input {
-      margin-left: 4px;
+      border: 2px solid red;
     }
   }
 `
 
-export const Wrapper = styled.div`
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-
-  input {
-    width: 320px;
-    height: 32px;
-    background-color: ${colors.salmon};
-    border: none;
-    margin-bottom: 8px;
-    margin-top: 8px;
-
-    &.error {
-      border: 3px solid ${colors.grey};
-    }
-  }
+export const ThanksNote = styled.p`
+  margin-bottom: 10px;
 `

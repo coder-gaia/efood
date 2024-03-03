@@ -1,18 +1,21 @@
 import { Container } from './styles'
 
-type Props = {
+type CardProps = {
   children: React.ReactNode
   title: string
-  totalPrice?: () => void
+  totalPrice?: number
+  isVisible: boolean
 }
 
-const Card = ({ children, title }: Props) => {
+const Card = ({ children, title, isVisible }: CardProps) => {
   return (
     <>
-      <Container>
-        <h2>{title}</h2>
-        {children}
-      </Container>
+      {isVisible && (
+        <Container>
+          <h2>{title}</h2>
+          {children}
+        </Container>
+      )}
     </>
   )
 }

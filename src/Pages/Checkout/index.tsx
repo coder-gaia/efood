@@ -1,278 +1,326 @@
-import { useEffect, useState } from 'react'
-import Card from '../../Components/Card'
-import { Button } from '../../Components/Plates/styles'
-import { Form, MainRow, SecRow, Wrapper } from './styles'
-import InputMask from 'react-input-mask'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { usePurchaseMutation } from '../../services/Api'
-import { useSelector } from 'react-redux'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Formik, Form, Field } from 'formik'
 import { RootReducer } from '../../store'
+import { clear } from '../../store/reducers/cart'
+import Card from '../../Components/Card'
+import {
+  InputGroup,
+  SentButton,
+  SmallInputsGroup,
+  SmallInputsGroupWrapper,
+  ThanksNote
+} from './styles'
+import getTotalPrice from '../../Utils'
 
-type Props = {
+type CheckoutPropsToggle = {
   isVisible: boolean
   returnToCart: () => void
 }
-const Checkout = ({ isVisible, returnToCart }: Props) => {
-  const [isPaymentFormVisible, setIsPaymentFormVisible] = useState(false)
-  const [purchase] = usePurchaseMutation()
-  const { plates } = useSelector((state: RootReducer) => state.cart)
+
+type FormValues = {
+  receiver: string
+  address: string
+  city: string
+  zipCode: string
+  number: string
+  complement: string
+  nameOnTheCard: string
+  cardNumber: string
+  cardCode: string
+  dueMonth: string
+  dueYear: string
+}
+
+const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
+  const [activeCart, setActiveCart] = useState<
+    'delivery' | 'payment' | 'orderSent'
+  >('delivery')
+  const plates = useSelector((state: RootReducer) => state.cart.plates)
+  const [isDeliveryFormSent, setIsDeliveryFormSent] = useState(false)
+  const dispatch = useDispatch()
 
   const goToPaymentForm = () => {
-    setIsPaymentFormVisible(true)
+    setActiveCart('payment')
   }
 
-  const returnToAddressform = () => {
-    setIsPaymentFormVisible(false)
+  const returToDelivery = () => {
+    setActiveCart('delivery')
   }
 
-  const form = useFormik({
-    initialValues: {
-      receiver: '',
-      address: '',
-      city: '',
-      zipCode: '',
-      number: '',
-      complement: '',
-      cardName: '',
-      cardNum: '',
-      cvv: '',
-      dueMonth: '',
-      dueYear: ''
-    },
-    validationSchema: Yup.object({
-      receiver: Yup.string().required('this field is mandatory'),
-      address: Yup.string().required('this field is mandatory'),
-      city: Yup.string().required('this field is mandatory'),
-      zipCode: Yup.string().required('this field is mandatory'),
-      number: Yup.string().required('this field is mandatory'),
-      complement: Yup.string().required('this field is mandatory'),
-      cardName: Yup.string().required('this field is mandatory'),
-      cardNum: Yup.string().required('this field is mandatory'),
-      cvv: Yup.string().required('this field is mandatory'),
-      dueMonth: Yup.string().required('this field is mandatory'),
-      dueYear: Yup.string().required('this field is mandatory')
-    }),
-    onSubmit(values) {
-      form.validateForm().then((errors) => {
-        if (Object.keys(errors).length === 0) {
-          purchase({
+  const sentOrder = () => {
+    setActiveCart('orderSent')
+  }
+
+  const finishOrder = () => {
+    dispatch(clear())
+    setActiveCart('delivery')
+    returnToCart()
+  }
+
+  const handleSubmit = async (
+    values: FormValues,
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
+    try {
+      console.log('Tentativa de envio do formulário:', values)
+
+      if (
+        !values.receiver ||
+        !values.address ||
+        !values.city ||
+        !values.zipCode ||
+        !values.number
+        // !values.nameOnTheCard ||
+        // !values.cardNumber ||
+        // !values.cardCode ||
+        // !values.dueMonth ||
+        // !values.dueYear
+      ) {
+        alert('All the fields must be filled correctly.')
+        return
+      }
+
+      const response = await fetch(
+        'https://fake-api-tau.vercel.app/api/efood/checkout',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
             delivery: {
               receiver: values.receiver,
               address: {
                 description: values.address,
                 city: values.city,
                 zipCode: values.zipCode,
-                number: Number(values.number),
+                number: parseInt(values.number),
                 complement: values.complement
               }
             },
             payment: {
               card: {
-                name: values.cardName,
-                number: Number(values.cardNum),
-                code: Number(values.cvv),
+                name: values.nameOnTheCard,
+                number: values.cardNumber,
+                code: parseInt(values.cardCode),
                 expires: {
-                  month: Number(values.dueMonth),
-                  year: Number(values.dueYear)
+                  month: parseInt(values.dueMonth),
+                  year: parseInt(values.dueYear)
                 }
               }
             },
-            products: plates.map((plate) => ({
-              id: plate.id,
-              price: plate.preco
-            }))
+            products: {
+              id: 1,
+              price: getTotalPrice(plates)
+            }
           })
-        } else {
-          alert('invalid form filling')
         }
-      })
+      )
+
+      if (response.ok) {
+        console.log('Dados do formulário enviados com sucesso!')
+        setIsDeliveryFormSent(true)
+        goToPaymentForm()
+      } else {
+        console.error(
+          'Erro ao enviar dados do formulário:',
+          response.statusText
+        )
+      }
+    } catch (error: any) {
+      console.error('Erro ao enviar dados do formulário:', error.message)
+    } finally {
+      setSubmitting(false)
     }
-  })
-
-  const checkIfInputHasError = (fieldName: string) => {
-    const isInvalid = fieldName in form.errors
-    const isTouched = fieldName in form.touched
-    const hasError = isInvalid && isTouched
-
-    return hasError
   }
 
+  const totalPrice = getTotalPrice(plates)
+
   return (
-    <Form onSubmit={form.handleSubmit}>
-      {isVisible && (
-        <>
-          <Card title={isPaymentFormVisible ? 'Payment' : 'Delivery'}>
-            <>
-              {!isPaymentFormVisible ? (
-                <>
-                  <MainRow>
-                    <label htmlFor="receiver">Who will receive?</label>
-                    <input
-                      type="text"
-                      name="receiver"
-                      id="receiver"
-                      value={form.values.receiver}
-                      onBlur={form.handleBlur}
-                      onChange={form.handleChange}
-                      className={
-                        checkIfInputHasError('receiver') ? 'error' : ''
-                      }
-                    />
+    <Formik
+      initialValues={{
+        receiver: '',
+        address: '',
+        city: '',
+        zipCode: '',
+        number: '',
+        complement: '',
+        nameOnTheCard: '',
+        cardNumber: '',
+        cardCode: '',
+        dueMonth: '',
+        dueYear: ''
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        handleSubmit(values, { setSubmitting })
+        if (
+          !values.receiver ||
+          !values.address ||
+          !values.city ||
+          !values.zipCode ||
+          !values.number
+        ) {
+          return
+        }
+        console.log('Form sent:', values)
+        setSubmitting(false)
+      }}
+    >
+      {({ isSubmitting, errors, touched }) => (
+        <Form>
+          <Card title="Delivery" isVisible={activeCart === 'delivery'}>
+            <InputGroup>
+              <label htmlFor="receiver">Who will receive:</label>
+              <Field
+                type="text"
+                id="receiver"
+                name="receiver"
+                className={errors.receiver && touched.receiver ? 'error' : ''}
+              />
+            </InputGroup>
 
-                    <label htmlFor="address">Address</label>
-                    <input
-                      type="text"
-                      name="address"
-                      value={form.values.address}
-                      onBlur={form.handleBlur}
-                      onChange={form.handleChange}
-                      className={checkIfInputHasError('address') ? 'error' : ''}
-                    />
+            <InputGroup>
+              <label htmlFor="address">Adress:</label>
+              <Field
+                type="text"
+                id="address"
+                name="address"
+                className={errors.address && touched.address ? 'error' : ''}
+              />
+            </InputGroup>
 
-                    <label htmlFor="city">City</label>
-                    <input
-                      type="text"
-                      name="city"
-                      id="city"
-                      value={form.values.city}
-                      onBlur={form.handleBlur}
-                      onChange={form.handleChange}
-                      className={checkIfInputHasError('city') ? 'error' : ''}
-                    />
-                  </MainRow>
+            <InputGroup>
+              <label htmlFor="city">City:</label>
+              <Field
+                type="text"
+                id="city"
+                name="city"
+                className={errors.city && touched.city ? 'error' : ''}
+              />
+            </InputGroup>
 
-                  <SecRow>
-                    <div>
-                      <label htmlFor="zipCode">Zip-code</label>
-                      <InputMask
-                        type="text"
-                        name="zipCode"
-                        id="zipCode"
-                        mask="99999-999"
-                        value={form.values.zipCode}
-                        onBlur={form.handleBlur}
-                        onChange={form.handleChange}
-                        className={
-                          checkIfInputHasError('zipCode') ? 'error' : ''
-                        }
-                      />
-                    </div>
+            <SmallInputsGroupWrapper>
+              <SmallInputsGroup>
+                <label htmlFor="zipCode">Zip Code:</label>
+                <Field
+                  type="text"
+                  id="zipCode"
+                  name="zipCode"
+                  className={errors.zipCode && touched.zipCode ? 'error' : ''}
+                />
+              </SmallInputsGroup>
+              <SmallInputsGroup>
+                <label htmlFor="number">Number:</label>
+                <Field
+                  id="number"
+                  name="number"
+                  className={errors.number && touched.number ? 'error' : ''}
+                />
+              </SmallInputsGroup>
+            </SmallInputsGroupWrapper>
 
-                    <div>
-                      <label htmlFor="number">Number</label>
-                      <input
-                        type="number"
-                        name="number"
-                        id="number"
-                        value={form.values.number}
-                        onBlur={form.handleBlur}
-                        onChange={form.handleChange}
-                        className={
-                          checkIfInputHasError('number') ? 'error' : ''
-                        }
-                      />
-                    </div>
-                  </SecRow>
-                  <MainRow>
-                    <label htmlFor="complement">Complement(optional)</label>
-                    <input
-                      type="text"
-                      name="complement"
-                      id="complement"
-                      className={
-                        checkIfInputHasError('complement') ? 'error' : ''
-                      }
-                    />
-                  </MainRow>
-                  <Button
-                    type="button"
-                    onClick={goToPaymentForm}
-                    disabled={!form.isValid}
-                  >
-                    Proceed with payment
-                  </Button>
-                  <Button type="button" onClick={returnToCart}>
-                    Return to cart
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Wrapper>
-                    <label htmlFor="cardName">Name on the card</label>
-                    <input
-                      type="text"
-                      name="cardName"
-                      id="cardName"
-                      className={
-                        checkIfInputHasError('cardName') ? 'error' : ''
-                      }
-                    />
-                  </Wrapper>
-                  <SecRow>
-                    <div className="cardNum">
-                      <label htmlFor="cardNum">Card Number</label>
-                      <InputMask
-                        type="text"
-                        name="cardNum"
-                        id="cardNum"
-                        mask="9999 9999 9999 9999"
-                        className={
-                          checkIfInputHasError('cardNum') ? 'error' : ''
-                        }
-                      />
-                    </div>
-                    <div className="cvv">
-                      <label htmlFor="cvv">CVV</label>
-                      <InputMask
-                        type="text"
-                        name="cvv"
-                        id="cvv"
-                        mask="999"
-                        className={checkIfInputHasError('cvv') ? 'error' : ''}
-                      />
-                    </div>
-                  </SecRow>
+            <InputGroup>
+              <label htmlFor="complement">Complement(optional):</label>
+              <Field type="text" id="complement" name="complement" />
+            </InputGroup>
 
-                  <SecRow>
-                    <div>
-                      <label htmlFor="dueMonth">Due Month</label>
-                      <InputMask
-                        type="number"
-                        name="dueMonth"
-                        id="dueMonth"
-                        mask="99"
-                        className={
-                          checkIfInputHasError('dueMonth') ? 'error' : ''
-                        }
-                      />
-                    </div>
-                    <div className="year">
-                      <label htmlFor="dueYear">Due Year</label>
-                      <InputMask
-                        type="number"
-                        name="dueYear"
-                        id="dueYear"
-                        mask="99"
-                        className={
-                          checkIfInputHasError('dueYear') ? 'error' : ''
-                        }
-                      />
-                    </div>
-                  </SecRow>
-
-                  <Button type="button">Finish payment</Button>
-
-                  <Button type="button" onClick={returnToAddressform}>
-                    Return to delivery
-                  </Button>
-                </>
-              )}
-            </>
+            <SentButton type="submit" disabled={isSubmitting}>
+              Proceed to Payment
+            </SentButton>
+            <SentButton onClick={returnToCart}>Return to cart</SentButton>
           </Card>
-        </>
+          <Card
+            title={`Payment - Total: $${totalPrice}`}
+            isVisible={activeCart === 'payment'}
+          >
+            <InputGroup>
+              <label htmlFor="nameOnTheCard">Name on the card</label>
+              <Field
+                id="nameOnTheCard"
+                name="nameOnTheCard"
+                className={
+                  errors.nameOnTheCard && touched.nameOnTheCard ? 'error' : ''
+                }
+              />
+            </InputGroup>
+
+            <SmallInputsGroupWrapper>
+              <SmallInputsGroup>
+                <label htmlFor="cardNumber">Card number</label>
+                <Field
+                  type="text"
+                  id="cardNumber"
+                  name="cardNumber"
+                  className={
+                    errors.cardNumber && touched.cardNumber ? 'error' : ''
+                  }
+                />
+              </SmallInputsGroup>
+              <SmallInputsGroup>
+                <label htmlFor="cardCode" className="LabelSize">
+                  CVV
+                </label>
+                <Field
+                  type="text"
+                  id="cardCode"
+                  name="cardCode"
+                  className={errors.cardCode && touched.cardCode ? 'error' : ''}
+                />
+              </SmallInputsGroup>
+            </SmallInputsGroupWrapper>
+
+            <SmallInputsGroupWrapper>
+              <SmallInputsGroup>
+                <label htmlFor="dueMonth">Due month</label>
+                <Field
+                  type="text"
+                  id="dueMonth"
+                  name="dueMonth"
+                  className={errors.dueMonth && touched.dueMonth ? 'error' : ''}
+                />
+              </SmallInputsGroup>
+              <SmallInputsGroup>
+                <label htmlFor="dueYear">Due year</label>
+                <Field
+                  type="text"
+                  id="dueYear"
+                  name="dueYear"
+                  className={errors.dueYear && touched.dueYear ? 'error' : ''}
+                />
+              </SmallInputsGroup>
+            </SmallInputsGroupWrapper>
+            <SentButton onClick={sentOrder}>Finish payment</SentButton>
+            <SentButton onClick={returToDelivery}>
+              Return to delivery
+            </SentButton>
+          </Card>
+          <Card
+            title="Order sent - {orderId}"
+            isVisible={activeCart === 'orderSent'}
+          >
+            <ThanksNote>
+              We are happy to inform you that your order is already in the
+              preparation process and will soon be delivered to the address
+              provided.
+            </ThanksNote>
+            <ThanksNote>
+              We would like to point out that our couriers are not authorized to
+              make extra charges.
+            </ThanksNote>
+            <ThanksNote>
+              Remember the importance of washing your hands after receiving your
+              order, thus ensuring your safety and well-being during the meal.
+            </ThanksNote>
+            <ThanksNote>
+              We hope you enjoy a delicious and pleasant gastronomic experience.
+              Enjoy!
+            </ThanksNote>
+            <SentButton onClick={finishOrder}>Finish</SentButton>
+          </Card>
+        </Form>
       )}
-    </Form>
+    </Formik>
   )
 }
 export default Checkout
