@@ -133,7 +133,8 @@ export const ModalDescription = styled.div`
   margin-bottom: -40px;
 
   @media screen and (max-width: 768px) {
-    width: 400px;
+    width: 350px;
+    margin-bottom: 8px;
   }
 `
 export const Portion = styled.div`
@@ -158,5 +159,10 @@ export const ModalButton = styled.button`
   &: hover {
     background-color: ${colors.white};
     color: ${colors.grey};
-    transition: ease .4s;
+    transition: ease 0.4s;
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 32px;
+  }
 `
