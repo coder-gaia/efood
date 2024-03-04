@@ -25,10 +25,6 @@ export const CartContainer = styled.div`
   &.is-open {
     display: flex;
   }
-
-  // @media screen and (max-width: 640px) {
-  //   width: 100%;
-  // }
 `
 export const Sidebar = styled.aside`
   background-color: ${colors.lightRed};
@@ -60,7 +56,11 @@ export const Prices = styled.p`
   margin-bottom: 24px;
 
   span {
-    margin-left: 214px;
+    margin-left: 245px;
+
+    @media screen and (max-width: 640px) {
+      margin-left: 170px;
+    }
   }
 `
 export const CartItem = styled.li`
