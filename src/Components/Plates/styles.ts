@@ -55,6 +55,10 @@ export const Button = styled.button`
     color: ${colors.grey};
     transition: ease 0.4s;
   }
+
+  @media screen and (max-width: 640px) {
+    margin-left: 8px;
+  }
 `
 export const ModalOverlay = styled.div`
   position: fixed;

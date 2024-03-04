@@ -25,6 +25,10 @@ export const CartContainer = styled.div`
   &.is-open {
     display: flex;
   }
+
+  // @media screen and (max-width: 640px) {
+  //   width: 100%;
+  // }
 `
 export const Sidebar = styled.aside`
   background-color: ${colors.lightRed};
@@ -41,6 +45,10 @@ export const Sidebar = styled.aside`
     font-size: 20px;
     font-weight: bold;
     line-height: 22px;
+  }
+
+  @media screen and (max-width: 640px) {
+    width: 80%;
   }
 `
 export const Prices = styled.p`
@@ -96,6 +104,7 @@ export const CartItem = styled.li`
     right: 8px;
   }
 `
+
 export const ProceedBtn = styled(Button)`
   width: 100%;
   margin-left: 0;

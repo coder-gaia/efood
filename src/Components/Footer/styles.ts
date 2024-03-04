@@ -40,4 +40,8 @@ export const FooterText = styled.div`
   max-width: 480px;
   height: 24px;
   margin-bottom: 40px;
+
+  @media screen and (max-width: 640px) {
+    width: 300px;
+  }
 `

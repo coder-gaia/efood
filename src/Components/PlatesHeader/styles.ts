@@ -21,11 +21,21 @@ export const HeaderContainer = styled.div`
   .link: visited {
     color: ${colors.lightRed};
   }
+
+  @media screen and (max-width: 640px) {
+    display: block;
+  }
 `
 export const Wrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+
+  @media screen and (max-width: 640px) {
+    margin-left: 100px;
+    margin-top: 24px;
+    display: inline-block;
+  }
 `
 export const LogoWrapper = styled.div`
   align-items: center;

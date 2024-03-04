@@ -26,6 +26,10 @@ export const InputGroup = styled.div`
     &.error {
       border: 3px solid black;
     }
+
+    @media screen and (max-width: 640px) {
+      width: 260px;
+    }
   }
 `
 
@@ -43,6 +47,10 @@ export const SentButton = styled.button`
   &:hover {
     background-color: ${colors.white};
     color: ${colors.grey};
+  }
+
+  @media screen and (max-width: 640px) {
+    width: 260px;
   }
 `
 

@@ -57,6 +57,10 @@ export const Description = styled.p`
   @media screen and (max-width: 768px) {
     width: 290px;
   }
+
+  @media screen and (max-width: 640px) {
+    width: 200px;
+  }
 `
 export const Button = styled.button`
   width: 82px;

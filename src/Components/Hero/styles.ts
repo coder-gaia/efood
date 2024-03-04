@@ -30,4 +30,9 @@ export const Title = styled.h1`
   font-weight: 900;
   font-size: 36px;
   line-height: 40px;
+
+  @media screen and (max-width: 640px) {
+    margin-top: -100px;
+    width: 290px;
+  }
 `
