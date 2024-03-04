@@ -364,8 +364,11 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                     errors.cardNumber && touched.cardNumber ? 'error' : ''
                   }
                   validate={(value: string) => {
-                    if (!touched.cardNumber || !value || value.length < 16) {
-                      return 'mandatory field'
+                    if (!value) {
+                      return 'Card number is required'
+                    }
+                    if (!/^\d{16}$/.test(value)) {
+                      return 'Card number must be exactly 16 digits'
                     }
                   }}
                 />
@@ -380,8 +383,11 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                   name="cardCode"
                   className={errors.cardCode && touched.cardCode ? 'error' : ''}
                   validate={(value: string) => {
-                    if (!touched.cardCode || !value || value.length < 3) {
-                      return 'mandatory field'
+                    if (!value) {
+                      return 'CVV is required'
+                    }
+                    if (!/^\d{3}$/.test(value)) {
+                      return 'CVV must be exactly 3 digits'
                     }
                   }}
                 />
@@ -397,8 +403,11 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                   name="dueMonth"
                   className={errors.dueMonth && touched.dueMonth ? 'error' : ''}
                   validate={(value: string) => {
-                    if (!touched.dueMonth || !value || value.length < 2) {
-                      return 'mandatory field'
+                    if (!value) {
+                      return 'Month is required'
+                    }
+                    if (!/^\d{2}$/.test(value)) {
+                      return 'Month must be exactly 2 digits'
                     }
                   }}
                 />
@@ -411,8 +420,11 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                   name="dueYear"
                   className={errors.dueYear && touched.dueYear ? 'error' : ''}
                   validate={(value: string) => {
-                    if (!touched.dueYear || !value || value.length < 2) {
-                      return 'mandatory field'
+                    if (!value) {
+                      return 'Year is required'
+                    }
+                    if (!/^\d{2}$/.test(value)) {
+                      return 'Year must be exactly 2 digits'
                     }
                   }}
                 />
