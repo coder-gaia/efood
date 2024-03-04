@@ -31,6 +31,12 @@ export const LogoWrapper = styled.div`
   align-items: center;
   margin-top: 40px;
   margin-left: 32px;
+
+  @media screen and (max-width: 768px) {
+    img {
+      display: none;
+    }
+  }
 `
 export const Title = styled.h3`
   margin-top: 32px;
@@ -85,6 +91,10 @@ export const UnderCaption = styled.p`
   left: 27%;
   transform: translateX(-50%);
   z-index: 1;
+
+  @media screen and (max-width: 768px) {
+    left: 35%;
+  }
 `
 export const CartIcon = styled.img`
   filter: invert(76%) sepia(77%) saturate(2845%) hue-rotate(340deg)

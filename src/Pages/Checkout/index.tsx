@@ -46,10 +46,6 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
 
   useEffect(() => {
     ;($('#zipCode') as any).mask('00000-000')
-    ;($('#cardNumber') as any).mask('0000 0000 0000 0000')
-    ;($('#cardCode') as any).mask('000')
-    ;($('#dueMonth') as any).mask('00')
-    ;($('#dueYear') as any).mask('00')
   }, [])
 
   const goToPaymentForm = () => {
@@ -261,9 +257,14 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                 id="receiver"
                 name="receiver"
                 className={errors.receiver && touched.receiver ? 'error' : ''}
+                validate={(value: string) => {
+                  if (!touched.receiver || !value || value.length < 3) {
+                    return 'Receiver must have at least 3 characters'
+                  }
+                }}
+                validateOnMount={false}
               />
             </InputGroup>
-
             <InputGroup>
               <label htmlFor="address">Adress:</label>
               <Field
@@ -271,6 +272,11 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                 id="address"
                 name="address"
                 className={errors.address && touched.address ? 'error' : ''}
+                validate={(value: string) => {
+                  if (!touched.address || !value || value.length < 3) {
+                    return 'mandatory field'
+                  }
+                }}
               />
             </InputGroup>
 
@@ -281,6 +287,11 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                 id="city"
                 name="city"
                 className={errors.city && touched.city ? 'error' : ''}
+                validate={(value: string) => {
+                  if (!touched.city || !value || value.length < 3) {
+                    return 'mandatory field'
+                  }
+                }}
               />
             </InputGroup>
 
@@ -301,6 +312,12 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                   id="number"
                   name="number"
                   className={errors.number && touched.number ? 'error' : ''}
+                  validate={(value: string) => {
+                    if (!touched.number || !value || value.length < 3) {
+                      return 'mandatory field'
+                    }
+                  }}
+                  validateOnMount={false}
                 />
               </SmallInputsGroup>
             </SmallInputsGroupWrapper>
@@ -321,30 +338,84 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
           >
             <InputGroup>
               <label htmlFor="nameOnTheCard">Name on the card</label>
-              <Field id="nameOnTheCard" name="nameOnTheCard" />
+              <Field
+                id="nameOnTheCard"
+                name="nameOnTheCard"
+                className={
+                  errors.nameOnTheCard && touched.nameOnTheCard ? 'error' : ''
+                }
+                validate={(value: string) => {
+                  if (!touched.nameOnTheCard || !value || value.length < 3) {
+                    return 'Receiver must have at least 3 characters'
+                  }
+                }}
+                validateOnMount={false}
+              />
             </InputGroup>
 
             <SmallInputsGroupWrapper>
               <SmallInputsGroup>
                 <label htmlFor="cardNumber">Card number</label>
-                <Field type="text" id="cardNumber" name="cardNumber" />
+                <Field
+                  type="text"
+                  id="cardNumber"
+                  name="cardNumber"
+                  className={
+                    errors.cardNumber && touched.cardNumber ? 'error' : ''
+                  }
+                  validate={(value: string) => {
+                    if (!touched.cardNumber || !value || value.length < 16) {
+                      return 'mandatory field'
+                    }
+                  }}
+                />
               </SmallInputsGroup>
               <SmallInputsGroup>
                 <label htmlFor="cardCode" className="LabelSize">
                   CVV
                 </label>
-                <Field type="text" id="cardCode" name="cardCode" />
+                <Field
+                  type="text"
+                  id="cardCode"
+                  name="cardCode"
+                  className={errors.cardCode && touched.cardCode ? 'error' : ''}
+                  validate={(value: string) => {
+                    if (!touched.cardCode || !value || value.length < 3) {
+                      return 'mandatory field'
+                    }
+                  }}
+                />
               </SmallInputsGroup>
             </SmallInputsGroupWrapper>
 
             <SmallInputsGroupWrapper>
               <SmallInputsGroup>
                 <label htmlFor="dueMonth">Due month</label>
-                <Field type="text" id="dueMonth" name="dueMonth" />
+                <Field
+                  type="text"
+                  id="dueMonth"
+                  name="dueMonth"
+                  className={errors.dueMonth && touched.dueMonth ? 'error' : ''}
+                  validate={(value: string) => {
+                    if (!touched.dueMonth || !value || value.length < 2) {
+                      return 'mandatory field'
+                    }
+                  }}
+                />
               </SmallInputsGroup>
               <SmallInputsGroup>
                 <label htmlFor="dueYear">Due year</label>
-                <Field type="text" id="dueYear" name="dueYear" />
+                <Field
+                  type="text"
+                  id="dueYear"
+                  name="dueYear"
+                  className={errors.dueYear && touched.dueYear ? 'error' : ''}
+                  validate={(value: string) => {
+                    if (!touched.dueYear || !value || value.length < 2) {
+                      return 'mandatory field'
+                    }
+                  }}
+                />
               </SmallInputsGroup>
             </SmallInputsGroupWrapper>
             <SentButton>Finish payment</SentButton>

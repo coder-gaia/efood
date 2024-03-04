@@ -22,10 +22,10 @@ export const InputGroup = styled.div`
     font-size: 16px;
     background-color: ${colors.salmon};
     border: none;
-  }
 
-  &.error {
-    border: 3px solid black;
+    &.error {
+      border: 3px solid black;
+    }
   }
 `
 

@@ -53,6 +53,10 @@ export const Description = styled.p`
   margin-right: 8px;
   margin-left: 8px;
   font-size: 14px;
+
+  @media screen and (max-width: 768px) {
+    width: 290px;
+  }
 `
 export const Button = styled.button`
   width: 82px;

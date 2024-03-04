@@ -4,7 +4,7 @@ import { colors } from '../../styles'
 export const ProductCard = styled.div`
   width: 384px;
   width: 100%;
-  height: 338px;
+  height: 350px;
   background-color: ${colors.lightRed};
   color: ${colors.white};
   border-radius: 4px;
@@ -44,7 +44,8 @@ export const Button = styled.button`
   font-size: 14px;
   background-color: ${colors.salmon};
   color: ${colors.darkRed};
-  margin-left: 8px;
+  margin-left: 12px;
+  margib-bottom: 8px;
   margin-top: 6px;
   border: none;
   font-weight: bold;
@@ -79,6 +80,11 @@ export const ModalContent = styled.div`
   height: 344px;
   width: 100%;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+
+  @media screen and (max-width: 768px) {
+    display: block;
+    height: auto;
+  }
 `
 
 export const CloseButton = styled.button`
@@ -98,6 +104,11 @@ export const ModalImage = styled.img`
   height: 280px;
   margin: 24px 24px 32px 32px;
   object-fit: cover;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin: 0;
+  }
 `
 export const ModalWrapper = styled.div`
   display: block;
@@ -116,6 +127,10 @@ export const ModalDescription = styled.div`
   padding: 8px;
   font-size: 16px;
   margin-bottom: -40px;
+
+  @media screen and (max-width: 768px) {
+    width: 400px;
+  }
 `
 export const Portion = styled.div`
   font-size: 16px;

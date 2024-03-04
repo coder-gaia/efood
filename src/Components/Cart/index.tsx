@@ -1,5 +1,11 @@
-import { Button } from '../Plates/styles'
-import { CartContainer, CartItem, Overlay, Prices, Sidebar } from './styles'
+import {
+  CartContainer,
+  CartItem,
+  Overlay,
+  Prices,
+  ProceedBtn,
+  Sidebar
+} from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootReducer } from '../../store'
 import { close, remove } from '../../store/reducers/cart'
@@ -60,12 +66,12 @@ const Cart = () => {
                   <Prices>
                     Total: <span>${getTotalPrice(plates)} </span>
                   </Prices>
-                  <Button
+                  <ProceedBtn
                     title="click here to finish the order"
                     onClick={goToCheckout}
                   >
                     Proceed with delivery
-                  </Button>
+                  </ProceedBtn>
                 </>
               ) : (
                 <p className="empty-text">

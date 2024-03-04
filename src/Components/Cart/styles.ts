@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { colors } from '../../styles'
 import trashCan from '../../assets/images/lixeira-de-reciclagem 1.png'
+import { Button } from '../Plates/styles'
 
 export const Overlay = styled.div`
   position: absolute;
@@ -94,4 +95,8 @@ export const CartItem = styled.li`
     bottom: 8px;
     right: 8px;
   }
+`
+export const ProceedBtn = styled(Button)`
+  width: 100%;
+  margin-left: 0;
 `
