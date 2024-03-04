@@ -357,7 +357,7 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
               <SmallInputsGroup>
                 <label htmlFor="cardNumber">Card number</label>
                 <Field
-                  type="text"
+                  type="number"
                   id="cardNumber"
                   name="cardNumber"
                   className={
@@ -375,7 +375,7 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
                   CVV
                 </label>
                 <Field
-                  type="text"
+                  type="number"
                   id="cardCode"
                   name="cardCode"
                   className={errors.cardCode && touched.cardCode ? 'error' : ''}
@@ -392,7 +392,7 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
               <SmallInputsGroup>
                 <label htmlFor="dueMonth">Due month</label>
                 <Field
-                  type="text"
+                  type="number"
                   id="dueMonth"
                   name="dueMonth"
                   className={errors.dueMonth && touched.dueMonth ? 'error' : ''}
@@ -406,7 +406,7 @@ const Checkout = ({ returnToCart }: CheckoutPropsToggle) => {
               <SmallInputsGroup>
                 <label htmlFor="dueYear">Due year</label>
                 <Field
-                  type="text"
+                  type="number"
                   id="dueYear"
                   name="dueYear"
                   className={errors.dueYear && touched.dueYear ? 'error' : ''}
