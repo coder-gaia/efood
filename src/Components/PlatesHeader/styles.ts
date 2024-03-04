@@ -40,7 +40,6 @@ export const Wrapper = styled.div`
 export const LogoWrapper = styled.div`
   align-items: center;
   margin-top: 40px;
-  margin-left: 32px;
 
   @media screen and (max-width: 768px) {
     img {
@@ -50,6 +49,7 @@ export const LogoWrapper = styled.div`
 `
 export const Title = styled.h3`
   margin-top: 32px;
+  margin-left: 75px;
   font-weight: bold;
   font-size: 18px;
 `
